@@ -37,17 +37,17 @@ def main():
     if not incidents:
         print("DDoS-атак не обнаружено")
 
-    # 4. Отчёт и графики
+    # Отчёт и графики
     analyzer.generate_security_report()
     analyzer.visualize_traffic()
 
-    # 5. Проверка целостности журнала аудита
+    # Проверка целостности журнала аудита
     ok, bad_line = audit.verify()
     audit.log("AUDIT_VERIFIED", "system", {"integrity_ok": ok})
     print("Целостность журнала аудита:",
           "OK" if ok else f"НАРУШЕНА (строка {bad_line})")
 
-    # 6. ROI (задание 2)
+    # ROI
     params = ROIInputs()
     result = calculate_roi(params)
     save_report(params, result)
