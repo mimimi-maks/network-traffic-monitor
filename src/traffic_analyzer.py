@@ -283,4 +283,4 @@ class NetworkTrafficAnalyzer:
         plt.tight_layout()
         plt.savefig("docs/network_traffic_analysis.png", dpi=150, bbox_inches="tight")
         print("📊 Графики сохранены в файл 'docs/network_traffic_analysis.png'")
-        plt.close(fig)  # при Agg plt.show() не нужен
+        plt.close(fig)
