@@ -6,19 +6,19 @@ from pathlib import Path
 @dataclass
 class ROIInputs:
     years: int = 3
-    # --- Затраты ---
+    # Затраты
     implementation_cost: float = 1_500_000        # разработка/внедрение, единоразово
     annual_license_and_support: float = 600_000   # лицензии, сервер, поддержка в год
     annual_staff_cost: float = 900_000            # доля ставки специалиста ИБ в год
-    # --- Инциденты безопасности (данные Ponemon/IBM, масштабированные под компанию) ---
+    # Инциденты безопасности (данные Ponemon/IBM, масштабированные под компанию)
     incident_cost: float = 15_000_000             # стоимость одного серьёзного инцидента
     incidents_per_year_before: float = 0.3        # ожидаемое число инцидентов в год
     incident_reduction: float = 0.6               # доля снижения ущерба
-    # --- Доступность (снижение простоя) ---
+    # Доступность (снижение простоя)
     downtime_hours_per_year_before: float = 40
     downtime_reduction: float = 0.5
     cost_per_downtime_hour: float = 120_000
-    # --- Утечки данных ---
+    # Утечки данных
     leak_loss_per_year_before: float = 3_000_000
     leak_reduction: float = 0.5
 
