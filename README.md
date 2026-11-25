@@ -13,7 +13,7 @@
 ```bash
 git clone https://github.com/mimimi-maks/network-traffic-monitor.git
 cd network-traffic-monitor
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
 pip install -r requirements.txt
 python main.py
 ```
