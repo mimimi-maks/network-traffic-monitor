@@ -19,8 +19,7 @@ python main.py
 ```
 
 ## Структура
-См. каталог `src/`: `traffic_analyzer.py`, `ddos_detector.py`, `audit_log.py`,
-`notifier.py`, `roi_calculator.py`.
+Каталог `src/`: `traffic_analyzer.py`, `ddos_detector.py`, `audit_log.py`, `notifier.py`, `roi_calculator.py`.
 
 ## Результаты
 ![Графики](docs/network_traffic_analysis.png)
