@@ -24,7 +24,7 @@ class NetworkTrafficAnalyzer:
         self.policy_violations = []
 
         self.security_policies = {
-            "max_daily_external_traffic": 10737418240,  # 10 ГБ
+            "max_daily_external_traffic": 10737418240,
             "blocked_ports": [21, 23, 135, 139, 445],
             "suspicious_ips": ["192.168.1.100", "10.0.0.15"],
             "work_hours": {"start": 9, "end": 18},
@@ -43,7 +43,7 @@ class NetworkTrafficAnalyzer:
     def simulate_traffic_data(self, hours=24, users=50):
         """Генерация имитационных данных трафика за `hours` часов."""
         print(f"\nГенерация имитационных данных за {hours} часов...")
-        np.random.seed(42)  # воспроизводимость
+        np.random.seed(42)
 
         timestamps, sources, destinations = [], [], []
         protocols, ports, sizes, departments = [], [], [], []
@@ -59,7 +59,7 @@ class NetworkTrafficAnalyzer:
             sources.append(f"192.168.1.{user_id}")
             departments.append(dept)
 
-            if np.random.random() > 0.7:  # 30% внешний трафик
+            if np.random.random() > 0.7:
                 destinations.append(
                     f"{np.random.randint(1, 255)}.{np.random.randint(1, 255)}."
                     f"{np.random.randint(1, 255)}.{np.random.randint(1, 255)}"
@@ -97,7 +97,7 @@ class NetworkTrafficAnalyzer:
         print("=" * 60)
         violations = []
 
-        # 1. Использование заблокированных портов
+        # Использование заблокированных портов
         blocked_port_violations = self.traffic_df[
             self.traffic_df["port"].isin(self.security_policies["blocked_ports"])
         ]
@@ -113,7 +113,7 @@ class NetworkTrafficAnalyzer:
                     "severity": "HIGH",
                 })
 
-        # 2. Активность в нерабочее время
+        # Активность в нерабочее время
         self.traffic_df["hour"] = self.traffic_df["timestamp"].dt.hour
         after_hours = self.traffic_df[
             (self.traffic_df["hour"] < self.security_policies["work_hours"]["start"]) |
@@ -131,7 +131,7 @@ class NetworkTrafficAnalyzer:
                         "severity": "MEDIUM",
                     })
 
-        # 3. Сканирование портов (правка 2: '5T' → '5min')
+        # Сканирование портов
         self.traffic_df["time_window"] = self.traffic_df["timestamp"].dt.floor("5min")
         port_scan_candidates = self.traffic_df.groupby(
             ["source_ip", "time_window"]
@@ -166,7 +166,7 @@ class NetworkTrafficAnalyzer:
         print("=" * 60)
         analysis_results = {}
 
-        # 1. По протоколам
+        # По протоколам
         protocol_distribution = self.traffic_df["protocol"].value_counts()
         print("\n  Распределение по протоколам:")
         for protocol, count in protocol_distribution.items():
@@ -174,7 +174,7 @@ class NetworkTrafficAnalyzer:
             print(f"  {protocol}: {count} ({percentage:.1f}%)")
         analysis_results["protocol_distribution"] = protocol_distribution
 
-        # 2. По отделам
+        # По отделам
         print("\n  Сетевой трафик по отделам:")
         dept_traffic = self.traffic_df.groupby("department").agg({
             "size_bytes": "sum",
@@ -185,7 +185,7 @@ class NetworkTrafficAnalyzer:
             print(f"  {dept}: {row['size_mb']:.1f} МБ от {int(row['source_ip'])} пользователей")
         analysis_results["department_traffic"] = dept_traffic
 
-        # 3. Внешний vs внутренний
+        # Внешний vs внутренний
         self.traffic_df["is_external"] = ~self.traffic_df["destination_ip"].str.startswith("192.168.1.")
         external_traffic = int(self.traffic_df["is_external"].sum())
         internal_traffic = len(self.traffic_df) - external_traffic
@@ -194,7 +194,7 @@ class NetworkTrafficAnalyzer:
         print(f"  Внутренний трафик: {internal_traffic} событий "
               f"({internal_traffic / len(self.traffic_df) * 100:.1f}%)")
 
-        # 4. Объём и лимит
+        # Объём и лимит
         total_traffic_mb = self.traffic_df["size_bytes"].sum() / (1024 * 1024)
         print(f"\n  Общий объём трафика: {total_traffic_mb:.1f} МБ")
         if total_traffic_mb > (self.security_policies["max_daily_external_traffic"] / (1024 * 1024)):
@@ -282,5 +282,5 @@ class NetworkTrafficAnalyzer:
 
         plt.tight_layout()
         plt.savefig("docs/network_traffic_analysis.png", dpi=150, bbox_inches="tight")
-        print("📊 Графики сохранены в файл 'docs/network_traffic_analysis.png'")
+        print("Графики сохранены в файл 'docs/network_traffic_analysis.png'")
         plt.close(fig)
