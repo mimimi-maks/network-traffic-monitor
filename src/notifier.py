@@ -1,4 +1,4 @@
-"""Оповещения в Telegram и Slack."""
+"""Оповещения в Telegram и Slack"""
 import os
 
 import requests
@@ -40,6 +40,6 @@ class Notifier:
             return False
 
     def alert(self, severity, title, details):
-        text = f"🚨 [{severity}] {title}\n{details}"
+        text = f"[{severity}] {title}\n{details}"
         return {"telegram": self.send_telegram(text),
                 "slack": self.send_slack(text)}
